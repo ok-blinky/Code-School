@@ -1,4 +1,40 @@
-// Iterating over an array of functions with the shift() method to carry the result into the array's next function arriving at a final value
+// Understanding Closure and modifying bound values after closure
+function warningMaker( obstacle ){
+  var count = 0;
+  var zones = [];
+  return function ( number, location ) {
+    var isThere = false;
+    if(zones.length<1){
+      zones.push([location, number]);
+    } else {
+      for(var i = 0; i<zones.length; i++){
+        if(zones[i][0]==location){
+          zones[i][1] += number;
+          isThere = true;
+        } else if(!isThere){
+          zones.push([location, number]);
+        }
+      }
+    }
+    count++;
+    var zoneList = "";
+    for(var n=0; n<zones.length; n++){
+        zoneList += "\n" + zones[n][0] + " (" + zones[n][1] + ")";}
+    alert("Beware! There have been " + obstacle + " sightings in the Cove today!\n" + 
+          number + " " + obstacle + "(s) spotted at the " + location + "!\n" +
+          "This is Alert #" + count + " today for " + obstacle + " danger.\n" +
+          "Current danger zones for " + obstacle + "(s) are:" + zoneList
+         );
+  };
+}
+var bergWarn = warningMaker("Iceberg");
+bergWarn(5,"Ocean");
+var batWarn = warningMaker("Bat");
+batWarn(20,"Swamp");
+batWarn(50,"Cave");
+bergWarn(1,"Sea");
+
+/* Iterating over an array of functions with the shift() method to carry the result into the array's next function arriving at a final value
 var puzzlers = [
   function ( a ) { return 8*a - 10; },
   function ( a ) { return (a-3) * (a-3) * (a-3); },
@@ -15,9 +51,12 @@ var applyAndEmpty = function(num, puzzles){
   }
   return num;
 };
-  
+
+console.log(puzzlers);
 applyAndEmpty(start, puzzlers);
+console.log(puzzlers);
 console.log(res);
+*/
 
 /* Demonstrating how to return a function from a function and immediately invoke it
 function adventureSelector ( userChoice ){
