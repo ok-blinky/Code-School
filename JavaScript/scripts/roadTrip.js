@@ -1,4 +1,29 @@
-// Understanding Closure and modifying bound values after closure
+// Objects: creating objects using Object Literal notation, accessing and modifying their properties
+var lighthouseRock = {
+  gateClosed: true,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 3,
+  ranger1: {name: "Nick Walsh", skillz: "magnification burn", station: 2},
+  ranger2: {name: "Drew Barontini", skillz: "uppercut launch", station: 3},
+  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1}
+};
+// create an array of lighthouse blinders with their names and power output
+var superBlinders = [ ["Firestorm", 4000], ["Solar Death Ray", 6000], ["Supernova", 12000] ];
+// add a property to lighthouseRock object and assign it the value of the blinders array 
+lighthouseRock.weaponBulbs = superBlinders;
+// create an alert message for the rangers by looping through the above object and sub-objects
+function dontPanic(location){
+  var assignmentList = "";
+  for(var i = 1; i<=location.numRangers; i++){
+    assignmentList += "\n" + location["ranger" + i]["name"] + ", man the " + 
+    location["weaponBulbs"][location["ranger" + i]["station"] - 1][0] + "!";
+  }    
+  return alert("Avast, me hearties!\nThere be Pirates nearby! Stations!" + assignmentList);
+}
+dontPanic(lighthouseRock);
+
+/* Understanding Closure and modifying bound values after closure
 function warningMaker( obstacle ){
   var count = 0;
   var zones = [];
@@ -33,6 +58,7 @@ var batWarn = warningMaker("Bat");
 batWarn(20,"Swamp");
 batWarn(50,"Cave");
 bergWarn(1,"Sea");
+*/
 
 /* Iterating over an array of functions with the shift() method to carry the result into the array's next function arriving at a final value
 var puzzlers = [
