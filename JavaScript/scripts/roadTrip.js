@@ -6,7 +6,19 @@ var lighthouseRock = {
   numRangers: 3,
   ranger1: {name: "Nick Walsh", skillz: "magnification burn", station: 2},
   ranger2: {name: "Drew Barontini", skillz: "uppercut launch", station: 3},
-  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1}
+  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1},
+  // this next object is a function or method that will add ranger objects to the lighthouseRock location
+  addRanger: function(name, skillz, station){
+    this.numRangers++;
+    this["ranger" + this.numRangers] = {name: name, skillz: skillz, station: station};},
+  // now an object that enumerates over the owner object with a for-in loop
+  listRangerNames: function(){
+    for(p in this){
+      if(this[p].name){
+        console.log(this[p]);
+      }
+    }
+  }
 };
 // create an array of lighthouse blinders with their names and power output
 var superBlinders = [ ["Firestorm", 4000], ["Solar Death Ray", 6000], ["Supernova", 12000] ];
