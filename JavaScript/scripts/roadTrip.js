@@ -1,4 +1,46 @@
-// Objects: creating objects using Object Literal notation, accessing and modifying their properties
+// Prototypes: Understanding the prototype heirarchy chain and how overriding effects objects and their prototypes
+var Tornado = function(category, affectedAreas, windGust){
+  this.category = category;
+  this.affectedAreas = affectedAreas;
+  this.windGust = windGust;
+};
+// our cities will be an array with subarrays for each city containing the name and population
+var cities = [["Kansas City", 464310], ["Topeka", 127939], ["Lenexa", 49398]];
+var twister = new Tornado("F5", cities, 220);
+twister.valueOf(); // Tornado {category: "F5", affectedAreas: Array[3], windGust: 220}
+// changing the valueOf method for Tornado objects to instead give us the sum of the populations in the affected cities
+Tornado.prototype.valueOf = function(){
+  var sum = 0;
+  for(var i = 0; i<this.affectedAreas.length; i++){
+    sum += this.affectedAreas[i][1];
+  }
+  return sum;
+}
+twister.valueOf(); // 641647
+// the new valueOf method for Tornado objects will update as the cities array is updated
+cities.push(["Olathe", 130045]);
+twister.valueOf(); // 771692
+// after carefully considering the implications, I'll add a new method to the base Object prototype
+Object.prototype.findOwnerOfProperty = function(propName){
+  // start by looking for the property within the caller Object itself
+  var currentObject = this;
+  // then loop up through the prototype chain until it's gone beyond the Object prototype
+  while(currentObject !== null){
+  // when currentObject has the prop  looking for then it's the closest object in heirarchy to the caller object
+    if(currentObject.hasOwnProperty(propName)){
+      return currentObject;
+  // otherwise, currentObject is not the owner of the property in question, so we just go up the chain
+    } else {
+      currentObject = currentObject.__proto__;
+    }
+  }
+  return "No property found!";
+}
+// calling the new Object prototype method on the overridden valueOf() method gives us the Tornado object's prototype
+twister.findOwnerOfProperty("valueOf"); // Object {valueOf: function, toString: function}
+
+
+/* Objects: creating objects using Object Literal notation, accessing and modifying their properties
 var lighthouseRock = {
   gateClosed: true,
   capacity: 30,
@@ -34,6 +76,8 @@ function dontPanic(location){
   return alert("Avast, me hearties!\nThere be Pirates nearby! Stations!" + assignmentList);
 }
 dontPanic(lighthouseRock);
+*/
+
 
 /* Understanding Closure and modifying bound values after closure
 function warningMaker( obstacle ){
@@ -72,6 +116,7 @@ batWarn(50,"Cave");
 bergWarn(1,"Sea");
 */
 
+
 /* Iterating over an array of functions with the shift() method to carry the result into the array's next function arriving at a final value
 var puzzlers = [
   function ( a ) { return 8*a - 10; },
@@ -96,6 +141,7 @@ console.log(puzzlers);
 console.log(res);
 */
 
+
 /* Demonstrating how to return a function from a function and immediately invoke it
 function adventureSelector ( userChoice ){
   if(userChoice == 1){
@@ -109,6 +155,7 @@ function adventureSelector ( userChoice ){
 adventureSelector(2)();
 */
 
+
 /* Creating single-line anonymous functions and storing them in an array
 var puzz1 = function(num){return num*3-8;}; // returns 8 less than 3 times an input
 var puzz2 = function(num){return (num+2)*(num+2)*(num+2);}; // returns the cube of the sum of an input and 2
@@ -118,6 +165,7 @@ var puzzlers = [puzz1, puzz2, puzz3, puzz4];
 var puzzles = puzzlers.map(function(puzz) { return " " + puzz(10);});
 alert(puzzles);
 */
+
 
 /* Illustrating the similarity between the map() method and a for loop
 var numbers = [1, 3, 2];
@@ -134,6 +182,7 @@ var squared = function(){
 console.log(squared());
 console.log(res);
 */
+
 
 /* Passing a function expression into another expression to conserve program memory
 var greet;
